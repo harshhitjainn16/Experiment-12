@@ -1,13 +1,24 @@
 {
-  "name": "simple-chat-app",
+  "name": "react-chat-app",
   "version": "1.0.0",
-  "description": "A simple real-time chat application using Socket.io",
+  "description": "A real-time chat application built with React and Socket.io",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "nodemon server.js",
+    "client": "cd client && npm start",
+    "build": "cd client && npm run build",
+    "heroku-postbuild": "cd client && npm install && npm run build"
   },
-  "keywords": ["chat", "socket.io", "websockets", "real-time", "fullstack"],
+  "keywords": [
+    "react",
+    "chat",
+    "socket.io",
+    "websockets",
+    "real-time",
+    "fullstack"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -15,6 +26,7 @@
     "socket.io": "^4.6.1"
   },
   "devDependencies": {
+    "concurrently": "^7.6.0",
     "nodemon": "^3.0.1"
   }
 }

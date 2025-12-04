@@ -1,14 +1,27 @@
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
+const path = require('path');
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIo(server);
-const PORT = process.env.PORT || 3000;
+const io = socketIo(server, {
+  cors: {
+    origin: process.env.NODE_ENV === 'production' ? false : ["http://localhost:3000", "http://127.0.0.1:3000"],
+    methods: ["GET", "POST"],
+    credentials: false
+  }
+});
+const PORT = process.env.PORT || 3001;
 
 // Middleware
-app.use(express.static('public'));
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, 'client/build')));
+  
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+  });
+}
 
 // Store active users
 const users = new Map();
